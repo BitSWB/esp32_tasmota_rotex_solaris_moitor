@@ -1,0 +1,54 @@
+homeassistant:
+  external_url: https://smarthome.sowa.intern
+  internal_url: https://smarthome.sowa.intern
+  customize:
+    sensor.tasmota_sm1_power_curr_w:
+      device_class: power
+      unit_of_measurement: 'W'
+    sensor.tasmota_sm1_total_in_kwh:
+      device_class: energy
+      unit_of_measurement: 'kWh'
+      state_class: total_increasing
+    sensor.tasmota_sm1_total_out_kwh:
+      device_class: energy
+      unit_of_measurement: 'kWh'
+      state_class: total_increasing
+    sensor.solaris_solaris_ha:
+        friendliy_name: "Manual to Automatic return (Ha)"
+        unit_of_measurement: "l/min"
+        icon: "mdi:water-percent"
+    sensor.solaris_solaris_bk:
+        friendly_name: "Brenner Kontakt vorhanden (BK)"
+        icon: "mdi:engine"
+    sensor.solaris_solaris_p1:
+        friendly_name: "Zirkulationspumpe aktiv (P1)"
+        unit_of_measurement: "%"
+        icon: "mdi:lightning-bolt"
+    sensor.solaris_solaris_p2:
+        friendly_name: "Booster Pumpe aktiv (P2)"
+        icon: "mdi:lightning-bolt"
+    sensor.solaris_solaris_tr:
+        friendly_name: "Temperatur Rücklauf (Tr)"
+        unit_of_measurement: "°C"
+        device_class: "temperature"
+    sensor.solaris_solaris_ts:
+        friendly_name: "Temperatur Speicher (Ts)"
+        unit_of_measurement: "°C"
+        device_class: "temperature"
+    sensor.solaris_solaris_tk:
+        friendly_name: "Temperatur Kollektor (Tk)"
+        unit_of_measurement: "°C"
+        device_class: "temperature"
+    sensor.solaris_solaris_tv:
+        friendly_name: "Temperatur Fluss (Tv)"
+        unit_of_measurement: "°C"
+        device_class: "temperature"
+    sensor.solaris_solaris_v:
+        friendly_name: "Durchflussrate (V)"
+        icon: "mdi:engine"
+        unit_of_measurement: "l/min"
+    sensor.solaris_solaris_p:
+        friendly_name: "Leistung (P)"
+        icon: "mdi:solar-power"
+        unit_of_measurement: "W"
+        device_class: "power"
