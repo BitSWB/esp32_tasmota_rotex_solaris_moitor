@@ -1,0 +1,38 @@
+type: picture-elements
+elements:
+  - type: state-label
+    entity: sensor.solaris_solaris_p1
+    style:
+      top: 57%
+      left: 33%
+  - type: state-label
+    entity: sensor.solaris_solaris_p2
+    style:
+      top: 50%
+      left: 33%
+  - type: state-label
+    entity: sensor.solaris_solaris_tk
+    style:
+      top: 2%
+      left: 85%
+  - type: state-label
+    entity: sensor.solaris_solaris_v
+    style:
+      top: 21%
+      left: 85%
+  - type: state-label
+    entity: sensor.solaris_solaris_tv
+    style:
+      top: 37%
+      left: 91%
+  - type: state-label
+    entity: sensor.solaris_solaris_tr
+    style:
+      top: 96%
+      left: 25%
+  - type: state-label
+    entity: sensor.solaris_solaris_ts
+    style:
+      top: 69%
+      left: 72%
+image: local/visualisierung_solaris_v4.png
