@@ -1,0 +1,1 @@
+# esp32_tasmota_rotex_solaris_moitor
