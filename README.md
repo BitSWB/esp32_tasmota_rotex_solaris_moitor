@@ -41,7 +41,7 @@ Choose the following options.
 
   |Solaris RPS3|Description   |
   |------------|--------------|
-  |cicle /s    | 15s          |
+  |cicle /s    | 10s          |
   |expedient   | AD-232       |      
   |baudrate    | 19200        |
   |direction   | 255          |
