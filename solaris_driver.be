@@ -123,6 +123,7 @@ class rotex_solaris
 	var msg = self.ser.read()   # read bytes from serial as bytes
 	if size(msg) > 0
 		self.values = re.split(';', string.replace(msg.asstring(),"\r\n",""))
+		self.ser.flush()
 	end
   end
 
@@ -135,4 +136,3 @@ end
 d1 = rotex_solaris()
 d1.init()
 tasmota.add_driver(d1)
-
