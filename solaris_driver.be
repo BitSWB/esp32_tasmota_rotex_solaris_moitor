@@ -10,12 +10,20 @@ class rotex_solaris
 	var values
 	var array_mapping
 	var translations
+	var mqtt_sent_string
+	var web_sent_string
+	var last_serial_data
 
   # intialize the serial port, if unspecified Tx/Rx are GPIO 21/25
   def init()
+	log("SOLARIS_DRIVER: new class initialized", 3)
     self.language = "de"
 	self.rx_pin = 25
 	self.baud_rate = 19200
+	
+	self.mqtt_sent_string = ""
+	self.web_sent_string = ""
+	self.last_serial_data = ""
 	
 	self.ser = serial(self.rx_pin, -1, self.baud_rate, serial.SERIAL_8N1)
 	
@@ -67,8 +75,9 @@ class rotex_solaris
   #- add sensor value to teleperiod -#
   def json_append()
     if !self.values return nil end  #- exit if not initialized -#
-
-    var msg = string.format(",\"SOLARIS\":{"..
+	if self.mqtt_sent_string == ""
+		log("SOLARIS_DRIVER: creating new mqtt string", 3)
+		self.mqtt_sent_string = string.format(",\"SOLARIS\":{"..
 											"\"ha\":%.2f,"..
 											"\"bk\":%i,"..
 											"\"p1\":%.2f,"..
@@ -90,14 +99,19 @@ class rotex_solaris
 											self.values[self.array_mapping['solaris_tv']],
 											self.values[self.array_mapping['solaris_v']],
 											self.values[self.array_mapping['solaris_p']])
-    tasmota.response_append(msg)
+	end
+	tasmota.response_append(self.mqtt_sent_string)
+    
+#	msg = nil
   end
 
   #- display sensor value in the web UI -#
   def web_sensor()
-    if !self.values return nil end  #- exit if not initialized -#
-
-    var msg = string.format(
+    log("SOLARIS_DRIVER: in web sensor function", 3)
+	if !self.values return nil end  #- exit if not initialized -#
+	if self.web_sent_string == ""
+		log("SOLARIS_DRIVER: creating new web sensor string", 3)
+		self.web_sent_string = string.format(
              "{s}"..self.translations['solaris_tk'].."{m}%.2f °C{e}"..
              "{s}"..self.translations['solaris_p1'].."{m}%.2f {e}"..
              "{s}"..self.translations['solaris_p2'].."{m}%.2f {e}"..
@@ -115,16 +129,30 @@ class rotex_solaris
 			  self.values[self.array_mapping['solaris_tr']],
 			  self.values[self.array_mapping['solaris_p']] 
 			  )
-    tasmota.web_send_decimal(msg)
+	end
+	log("SOLARIS_DRIVER: sending web string", 3)
+    tasmota.web_send_decimal(self.web_sent_string)
+#	msg = nil
   end
 
 
   def read_data()
 	var msg = self.ser.read()   # read bytes from serial as bytes
 	if size(msg) > 0
-		self.values = re.split(';', string.replace(msg.asstring(),"\r\n",""))
-		self.ser.flush()
+		log("SOLARIS_DRIVER: got new serial data", 3)
+		if self.last_serial_data == msg.asstring()
+			log("SOLARIS_DRIVER: serial data unchanged", 3)
+		else
+			log("SOLARIS_DRIVER: serial data changed", 3)
+			self.values = re.split(';', string.replace(msg.asstring(),"\r\n",""))
+			self.last_serial_data = msg.asstring()
+			self.ser.flush()
+			msg = nil
+			self.web_sent_string = ""
+			self.mqtt_sent_string = ""
+		end
 	end
+	
   end
 
   def every_second()
